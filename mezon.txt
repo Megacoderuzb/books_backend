@@ -1,0 +1,93 @@
+API yasash
+
+Texnologiyalar
+express.js, lowdb(optional), jsonwebtoken
+
+Resourceslar
+users - (foydalanuvchilar)* user -> { id, firstName, lastName, email, password, role = 'admin' | 'customer' | 'superAdmin' }
+books - (kitoblar)* { id, title, authorId, category = 'badiy' | 'biznes' | 'ilm-fan' | 'siyosat' | 'boshqa' }
+authors - (mualliflar)* { id, name }
+
+1. GET /users -> Foydalanuvchilar ro'yxati
+	*faqat admin uchun ruxsat
+
+	/users?role=admin -> adminlar
+	/users?role=customer -> xaridorlar
+
+2. GET /users/me -> Login qilgan foydalanuvchini ma'lumotlari
+	*login qilgan foydalanuvchi uchun ruxsat
+
+3. DELETE /users/:id -> Foydalanuvchini o'chirish
+	*faqat admin va superAdmin uchun ruxsat
+	*admin o'zini o'chira olmasin
+	*adminni faqat super admin o'chira olsin
+	*superAdmin o'zini o'chira olmasin
+
+4. PATCH /users/me - Foydalanuvchini tahrirlash
+	*barcha foydalanuvchi faqat o'zini tahrirlay oladi.(rolini o'zgartira olmaydi)
+
+5. POST /users/register - Foydalanuvchini ro'yxatda o'tishi
+	*Faqatgina customerlar ro'yhatdan o'ta oladi
+	*validatsiya yozish kerak bo'ladi
+	*password min length 6
+	*email is valid
+	*firstName min length 1
+	*lastName min length 1
+	*role default "customer" bu api uchun
+	*passwordni hash lang
+
+6. POST /users - Roli admin bo'lgan foydalanuvchi qo'shish
+	*faqat superAdminga ruxsat
+	*validatsiya yozish kerak bo'ladi
+	*password min length 6
+	*email is valid
+	*firstName min length 1
+	*lastName min length 1
+	*role default "admin" bu api uchun
+	*passwordni hashlang
+
+7. POST /users/login - email va password bilan login qilish
+	*jwt tokenni secretini .env fayldan olish
+	*jwt payloadni yuqoridagi talablarga ko'ra tashkillashtirish
+
+(yuqoridagi qismlari qilingan dars jarayonida)
+____________________________________________________________________________________
+
+8. POST /books - kitob qo'shish
+	*faqat adminlar kitob qo'sha oladi (superAdmin qo'sha olmaydi)
+	*validatsiya yozilsin yuqoridagi kitobni modeliga ko'ra
+
+9. GET /books - kitoblarni olish - [{ id, title, category, authorId }]
+	*har qanday login qilgan foydalanuvchi (superAdmin, admin, customer)
+	*kitoblarni categoriyasiga ko'ra olish /books?category=badiy
+	*kitoblarni mualllifga ko'ra olish /books?authorId=1234
+
+10. GET /books/:id - kitobni idsiga ko'ra olish - { id, title, category, authorId, author: { id, name } }
+	*har qanday login qilgan foydalanuvchi (superAdmin, admin, customer)
+	*muallifni ham kitobga biriktirish
+
+11. PUT /books/:id - kitob tahrirlash
+	*faqat adminlar kitobni tahrirlay oladi
+	*validatsiya yozilishi kerak
+
+12. DELETE /books/:id - kitobni o'chirish
+	*faqat adminlar kitobni o'chira oladi
+
+13. POST /authors - muallif qo'shish
+	*faqat adminlar muallif qo'sha oladi (superAdmin qo'sha olmaydi)
+	*validatsiya yozilsin yuqoridagi muallifni modeliga ko'ra
+
+9. GET /authors- mualliflarni olish - [{ id, name }]
+	*har qanday login qilgan foydalanuvchi (superAdmin, admin, customer)
+
+10. GET /authors/:id - muallifni idsiga ko'ra olish - { id, name, countBooks }
+	*har qanday login qilgan foydalanuvchi (superAdmin, admin, customer)
+	*countBooks maydoniga nechta kitobi bo'lsa shuni biriktirish
+
+11. PUT /authors/:id - muallifni tahrirlash
+	*faqat adminlar muallifni tahrirlay oladi
+	*validatsiya yozilishi kerak
+
+12. DELETE /authors/:id - muallifni o'chirish
+	*faqat adminlar muallifni o'chira oladi
+	*agar kitoblari bo'lsa muallifni o'chira olmasin

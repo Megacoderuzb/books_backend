@@ -1,0 +1,26 @@
+{
+  "users": [
+    {
+      "id": "41020980-2229-46eb-8775-79f7f3fd629f",
+      "firstName": "megacodr",
+      "lastName": "megacodr",
+      "email": "megacoderuzb@gmail.com",
+      "password": "$2b$08$pQMzZY97RiKdJU6OTNKtdu4z1VthG/w/CYltmbSnrk4A8..4LWt3G",
+      "role": "superAdmin"
+    }
+  ],
+  "books": [
+    {
+      "id": "8d58fbef-4b5d-48b4-8972-5b42e1a94524",
+      "title": "olot-somsa retsepti",
+      "authorId": "b612b9f6-e342-49ab-b5e5-d4bccf48328a",
+      "category": "boshqa"
+    }
+  ],
+  "authors": [
+    {
+      "id": "b612b9f6-e342-49ab-b5e5-d4bccf48328a",
+      "name": "Yusuf xos xojib"
+    }
+  ]
+}
